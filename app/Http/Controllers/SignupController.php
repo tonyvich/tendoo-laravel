@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use App\Helpers\Page;
-use App\Frontend\Fields;
+use App\Services\Page;
+use App\Services\Fields;
 use App\Http\Requests\SignupRequest;
-use App\User;
+use App\Models\User;
 
 class SignupController extends Controller
 {
@@ -34,6 +34,7 @@ class SignupController extends Controller
 
     public function submit( SignupRequest $request,  Fields $fields )
     {
+        $allUsers           =   User::all();
         $user   =   new User;
         foreach( $fields->signup() as $name => $field ) {
             if( @$field[ 'ignore' ] != true ) {
@@ -41,7 +42,13 @@ class SignupController extends Controller
                     $user->$name    =   $field[ 'beforeSave' ]( request( $name ) );
                 } else {
                     $user->$name    =   request( $name );
-                }                
+                }
+
+                // IF there is not user on the system, then we'll create an adminisrator
+
+                if( count( $allUsers ) == 0 ) {
+                    $user->role_id      =   4;  // 'subscriber', ''
+                }
             }            
         }
 

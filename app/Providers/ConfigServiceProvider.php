@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Backend\Menus;
+use App\Services\Menus;
 
 class ConfigServiceProvider extends ServiceProvider
 {
@@ -16,7 +16,6 @@ class ConfigServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
     }
 
     /**
